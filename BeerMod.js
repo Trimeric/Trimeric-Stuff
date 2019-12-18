@@ -1,41 +1,35 @@
-//The idea in this simple example mod is to add a few elements focused around hot sauce, because hot sauce is great and I use that stuff everywhere.
-	
-	//First we create a couple new resources :
 	new G.Res({
 		name:'barley',
 		desc:'[barley] is a cereal grain that people can use in alcoholic beverages.',
 		icon:[0,0,'spicySheet'],
-		turnToByContext:{'eat':{'health':0.01,'happiness':0.01},'decay':{'spoiled food':0.5}},//this basically translates to : "when eaten, generate some health and happiness; when rotting, turn into either nothing or some spoiled food"
-		partOf:'food',
+		turnToByContext:{'eat':{'health':0.01,'happiness':0.01},'decay':{'spoiled food':0.5		partOf:'food',
 		category:'food',
 	});
 	new G.Res({
 		name:'beer',
 		desc:'Made from [herb]s and [barley], [beer], its the cure to all your problems.',
 		icon:[1,0,'spicySheet'],
-		turnToByContext:{'eat':{'health':0.01,'happiness':0.5},'decay':{'beer':0.95,'spoiled food':0.05}},//that last part makes hot sauce effectively have a 95% chance of simply not rotting (in effect, it decays into itself)
+		turnToByContext:{'eat':{'health':0.01,'happiness':0.5},'decay':{'beer':0.95,'spoiled food':0.05}}, 
 		partOf:'food',
 		category:'food',
 	});
 	
-	//Then we augment the base data to incorporate our new resources :
-		//adding hot pepper as something that can be gathered from grass
-	G.getDict('grass').res['gather']['hot pepper']=3;
-		//adding a new mode to artisans so they can make hot sauce from hot peppers
-	G.getDict('artisan').modes['beer']={name:'Make Beer',desc:'Turn 3 [barley] and 3 [herb]s into 2 [beer].',req:{'beer preparing':true},use:{'knapped tools':1}};
-		//adding a new effect to artisans that handles the actual hot sauce preparing and is only active when the unit has the mode "hot sauce"
-	G.getDict('artisan').effects.push({type:'convert',from:{'barley':3,'herb':3},into:{'beer':2},every:3,mode:'beer'});
 	
-	//Then we add a new technology which is required by the artisans to gain access to the "hot sauce" mode :
+	G.getDict('grass').res['gather']['barley']=3;
+		
+	G.getDict('artisan').modes['beer']={name:'Make Beer',desc:'Turn 3 [barley] and 3 [herb]s into 2 [beer].',req:{'beer preparing':true},use:{'knapped tools':1}};
+			G.getDict('artisan').effects.push({type:'convert',from:{'barley':3,'herb':3},into:{'beer':2},every:3,mode:'beer'});
+	
+	
 	new G.Tech({
 		name:'beer making',
-		desc:'@[artisan]s can now produce [beer] from [barley] and [herb]s//This special recipe allows a skilled craftsman to fully express the alcohol present in barley.',
+		desc:'@[artisan]s can now produce [beer] from [barley] and [herb]s
 		icon:[0,1,'spicySheet'],
 		cost:{'insight':10},
 		req:{'cooking':true},
 	});
 	
-	//Finally, we add a trait that amplifies the benefits of consuming hot sauce; it will take on average 20 years to appear once the conditions (knowing the "Hot sauce preparing" tech) is fulfilled.
+	
 	new G.Trait({
 		name:'devoted alcoholics',
 		desc:'@your people appreciate [beer] twice as much and will be twice as happy from consuming it.',
@@ -43,10 +37,7 @@
 		chance:20,
 		req:{'beer making':true},
 		effects:[
-			{type:'function',func:function(){G.getDict('beer').turnToByContext['eat']['happiness']=1;}},//this is a custom function executed when we gain the trait
+			{type:'function',func:function(){G.getDict('beer').turnToByContext['eat']['happiness']=1;}}, 
 		],
 	});
 	
-	//There are many other ways of adding and changing content; refer to /data.js, the default dataset, if you want to see how everything is done in the base game. Good luck!
-
-
