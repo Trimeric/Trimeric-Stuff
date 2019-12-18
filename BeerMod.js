@@ -18,7 +18,8 @@
 	G.getDict('grass').res['gather']['barley']=3;
 		
 	G.getDict('artisan').modes['beer']={name:'Make Beer',desc:'Turn 3 [barley] and 3 [herb]s into 2 [beer].',req:{'beer preparing':true},use:{'knapped tools':1}};
-			G.getDict('artisan').effects.push({type:'convert',from:{'barley':3,'herb':3},into:{'beer':2},every:3,mode:'beer'});
+	
+	G.getDict('artisan').effects.push({type:'convert',from:{'barley':3,'herb':3},into:{'beer':2},every:3,mode:'beer'});
 	
 	
 	new G.Tech({
@@ -36,8 +37,8 @@
 		icon:[1,1,'spicySheet'],
 		chance:20,
 		req:{'beer making':true},
-		effects:[
-			{type:'function',func:function(){G.getDict('beer').turnToByContext['eat']['happiness']=1;}}, 
-		],
+		effects:[{type:'function',func:function(){G.getDict('beer').turnToByContext['eat']['happiness']=1;}},], 
+		
+			
 	});
 	
